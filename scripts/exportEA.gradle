@@ -48,8 +48,6 @@ task exportEA(
     doLast {
         logger.info("docToolchain > exportEA: "+docDir)
         logger.info("docToolchain > exportEA: "+mainConfigFile)
-        def configFile = new File(docDir, mainConfigFile)
-        def config = new ConfigSlurper().parse(configFile.text)
         def scriptParameterString = ""
         def exportPath = ""
         def searchPath = ""

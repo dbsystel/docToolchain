@@ -17,8 +17,6 @@ task exportJiraIssues(
         group: 'docToolchain'
 ) {
     doLast {
-        def configFile = new File(docDir, mainConfigFile)
-        def config = new ConfigSlurper().parse(configFile.text)
 
         if(config.jira.credentials.isEmpty()){
             logger.quiet("No JIRA credentials are set in '${configFile.name}'")

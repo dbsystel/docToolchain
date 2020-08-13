@@ -12,17 +12,6 @@ buildscript {
 
 apply plugin: 'org.aim42.htmlSanityCheck'
 
-// configuration
-def config
-if (docDir.startsWith('.')) {
-    docDir = new File(projectDir, docDir).canonicalPath
-}
-logger.info "docToolchain> docDir: ${docDir}"
-logger.info "docToolchain> mainConfigFile: ${mainConfigFile}"
-logger.info "docToolchain> pdfThemeDir: ${pdfThemeDir}"
-def configSlurper = new ConfigSlurper()
-config = configSlurper.parse(new File(docDir, mainConfigFile).text)
-
 //tag::htmlSanityCheck[]
 htmlSanityCheck {
     sourceDir = new File(config.htmlSanityCheck.sourceDir?:"$targetDir/html5")

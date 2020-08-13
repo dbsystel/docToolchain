@@ -11,6 +11,34 @@ plugins {
 
 apply plugin:'groovy'
 
+if (docDir.startsWith('.')) {
+    docDir = new File(projectDir, docDir).canonicalPath
+}
+if (pdfThemeDir.startsWith('.')) {
+    pdfThemeDir = new File(docDir, pdfThemeDir).canonicalPath
+}
+logger.info "docToolchain> docDir: ${docDir}"
+logger.info "docToolchain> mainConfigFile: ${mainConfigFile}"
+logger.info "docToolchain> pdfThemeDir: ${pdfThemeDir}"
+def configSlurper = new ConfigSlurper()
+ext.config = configSlurper.parse(new File(docDir, mainConfigFile).text)
+ext.config.inputPath = ext.config.inputPath?ext.config.inputPath:'.'
+logger.info "docToolchain> inputPath: ${ext.config.inputPath}"
+logger.info "docToolchain> inputFiles: ${ext.config.inputFiles}"
+logger.info "docToolchain> outputPath: ${ext.config.outputPath}"
+ext.config.referenceDocFile = ext.config.referenceDocFile?ext.config.referenceDocFile:''
+logger.info "docToolchain> referenceDocFile: ${ext.config.referenceDocFile}"
+
+ext {
+    srcDir  = "${docDir}/${ext.config.inputPath}"
+    targetDir = "${docDir}/${ext.config.outputPath}"
+    javaVersion = System.getProperty("java.version")
+    currentDate = new Date().format("d. MMM yyyy")
+    // where HTMLSanityCheck checking results ares stored
+    checkingResultsPath = "${docDir}/${ext.config.outputPath}/report/htmlchecks"
+    sourceFiles = ext.config.inputFiles
+}
+
 dependencies {
     testImplementation(
             ('junit:junit:4.12'),

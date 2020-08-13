@@ -14,38 +14,6 @@ buildscript {
 }
 import org.asciidoctor.gradle.AsciidoctorTask
 
-// configuration
-def config
-if (docDir.startsWith('.')) {
-    docDir = new File(projectDir, docDir).canonicalPath
-}
-if (pdfThemeDir.startsWith('.')) {
-    pdfThemeDir = new File(docDir, pdfThemeDir).canonicalPath
-}
-logger.info "docToolchain> docDir: ${docDir}"
-logger.info "docToolchain> mainConfigFile: ${mainConfigFile}"
-logger.info "docToolchain> pdfThemeDir: ${pdfThemeDir}"
-def configSlurper = new ConfigSlurper()
-config = configSlurper.parse(new File(docDir, mainConfigFile).text)
-inputPath = config.inputPath?config.inputPath:'.'
-logger.info "docToolchain> inputPath: ${inputPath}"
-logger.info "docToolchain> inputFiles: ${config.inputFiles}"
-logger.info "docToolchain> outputPath: ${config.outputPath}"
-referenceDocFile = config.referenceDocFile?config.referenceDocFile:''
-logger.info "docToolchain> referenceDocFile: ${referenceDocFile}"
-
-ext {
-    srcDir  = "${docDir}/${inputPath}"
-    targetDir = "${docDir}/${config.outputPath}"
-    javaVersion = System.getProperty("java.version")
-    currentDate = new Date().format("d. MMM yyyy")
-    // where HTMLSanityCheck checking results ares stored
-    checkingResultsPath = "${docDir}/${config.outputPath}/report/htmlchecks"
-    sourceFiles = config.inputFiles
-}
-
-
-
 dependencies {
     asciidoctor 'org.asciidoctor:asciidoctorj-pdf:1.5.3'
     asciidoctor 'org.asciidoctor:asciidoctorj-diagram:2.0.1'
